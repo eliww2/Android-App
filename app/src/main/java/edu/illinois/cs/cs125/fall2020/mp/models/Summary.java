@@ -1,9 +1,8 @@
 package edu.illinois.cs.cs125.fall2020.mp.models;
 
 import androidx.annotation.NonNull;
-
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
-
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -69,20 +68,18 @@ public class Summary implements SortedListAdapter.ViewModel {
     return title;
   }
 
-  /**
-   * Create an empty Summary.
-   */
+  /** Create an empty Summary. */
   @SuppressWarnings({"unused", "RedundantSuppression"})
   public Summary() {}
 
   /**
    * Create a Summary with the provided fields.
    *
-   * @param setYear       the year for this Summary
-   * @param setSemester   the semester for this Summary
+   * @param setYear the year for this Summary
+   * @param setSemester the semester for this Summary
    * @param setDepartment the department for this Summary
-   * @param setNumber     the number for this Summary
-   * @param setTitle      the title for this Summary
+   * @param setNumber the number for this Summary
+   * @param setTitle the title for this Summary
    */
   public Summary(
       final String setYear,
@@ -97,9 +94,7 @@ public class Summary implements SortedListAdapter.ViewModel {
     title = setTitle;
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public boolean equals(final Object o) {
     if (!(o instanceof Summary)) {
@@ -112,35 +107,64 @@ public class Summary implements SortedListAdapter.ViewModel {
         && Objects.equals(number, course.number);
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public int hashCode() {
     return Objects.hash(year, semester, department, number);
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public <T> boolean isSameModelAs(@NonNull final T model) {
     return equals(model);
   }
 
-  /**
-   * {@inheritDoc}
-   */
+  /** {@inheritDoc} */
   @Override
   public <T> boolean isContentTheSameAs(@NonNull final T model) {
     return equals(model);
   }
 
+  /** This will Compare courses to order them in the app. */
   public static final Comparator<Summary> COMPARATOR =
-      (courseModel1, courseModel2) -> 0;
+      (courseModel1, courseModel2) -> {
+        if (courseModel1.department.compareTo(courseModel2.department) > 0) {
+          return 1;
+        }
+        if (courseModel1.department.compareTo(courseModel2.department) < 0) {
+          return -1;
+        }
+        if (courseModel1.number.compareTo(courseModel2.number) > 0) {
+          return 1;
+        }
+        if (courseModel1.number.compareTo(courseModel2.number) < 0) {
+          return -1;
+        }
+        if (courseModel1.title.compareTo(courseModel2.title) > 0) {
+          return 1;
+        }
+        if (courseModel1.title.compareTo(courseModel2.title) < 0) {
+          return -1;
+        }
+        return 0;
+      };
 
+  /** Checks courses for instances of @text. */
   public static List<Summary> filter(
       @NonNull final List<Summary> courses, @NonNull final String text) {
-    return courses;
+    List<Summary> toReturn = new ArrayList<>();
+    if (courses.isEmpty()) {
+      return courses;
+    }
+    for (int i = 0; i < courses.size(); i++) {
+      if (courses.get(i).department.toLowerCase().contains(text.toLowerCase())) {
+        toReturn.add(courses.get(i));
+      } else if (courses.get(i).title.toLowerCase().contains(text.toLowerCase())) {
+        toReturn.add(courses.get(i));
+      } else if (courses.get(i).number.toLowerCase().contains(text.toLowerCase())) {
+        toReturn.add(courses.get(i));
+      }
+    }
+    return toReturn;
   }
 }
