@@ -1,5 +1,7 @@
 package edu.illinois.cs.cs125.fall2020.mp.models;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 import java.util.ArrayList;
@@ -58,7 +60,6 @@ public class Summary implements SortedListAdapter.ViewModel {
   }
 
   private String title;
-
   /**
    * Get the title for this Summary.
    *
@@ -66,6 +67,17 @@ public class Summary implements SortedListAdapter.ViewModel {
    */
   public final String getTitle() {
     return title;
+  }
+
+  private String newName;
+
+  /**
+   * Get the endName for this Summary.
+   *
+   * @return the endName for this Summary
+   */
+  public final String getName() {
+    return newName;
   }
 
   /** Create an empty Summary. */
@@ -92,6 +104,7 @@ public class Summary implements SortedListAdapter.ViewModel {
     department = setDepartment;
     number = setNumber;
     title = setTitle;
+    newName = department + " " + number + ": " + title;
   }
 
   /** {@inheritDoc} */
@@ -154,14 +167,10 @@ public class Summary implements SortedListAdapter.ViewModel {
       @NonNull final List<Summary> courses, @NonNull final String text) {
     List<Summary> toReturn = new ArrayList<>();
     if (courses.isEmpty()) {
-      return courses;
+      return toReturn;
     }
     for (int i = 0; i < courses.size(); i++) {
-      if (courses.get(i).department.toLowerCase().contains(text.toLowerCase())) {
-        toReturn.add(courses.get(i));
-      } else if (courses.get(i).title.toLowerCase().contains(text.toLowerCase())) {
-        toReturn.add(courses.get(i));
-      } else if (courses.get(i).number.toLowerCase().contains(text.toLowerCase())) {
+      if (courses.get(i).newName.toLowerCase().contains(text.toLowerCase())) {
         toReturn.add(courses.get(i));
       }
     }
