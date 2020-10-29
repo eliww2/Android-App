@@ -60,6 +60,7 @@ public class Summary implements SortedListAdapter.ViewModel {
   }
 
   private String title;
+
   /**
    * Get the title for this Summary.
    *
@@ -69,7 +70,7 @@ public class Summary implements SortedListAdapter.ViewModel {
     return title;
   }
 
-  private String newName;
+  private String name;
 
   /**
    * Get the endName for this Summary.
@@ -77,7 +78,8 @@ public class Summary implements SortedListAdapter.ViewModel {
    * @return the endName for this Summary
    */
   public final String getName() {
-    return newName;
+    Log.d("tag", "got name");
+    return name;
   }
 
   /** Create an empty Summary. */
@@ -104,7 +106,11 @@ public class Summary implements SortedListAdapter.ViewModel {
     department = setDepartment;
     number = setNumber;
     title = setTitle;
-    newName = department + " " + number + ": " + title;
+    name = department + " " + number + ": " + title;
+
+  }
+  public String nameString() {
+    return department + " " + number + ": " + title;
   }
 
   /** {@inheritDoc} */
@@ -117,7 +123,8 @@ public class Summary implements SortedListAdapter.ViewModel {
     return Objects.equals(year, course.year)
         && Objects.equals(semester, course.semester)
         && Objects.equals(department, course.department)
-        && Objects.equals(number, course.number);
+        && Objects.equals(number, course.number)
+        && Objects.equals(name, course.name);
   }
 
   /** {@inheritDoc} */
@@ -159,6 +166,12 @@ public class Summary implements SortedListAdapter.ViewModel {
         if (courseModel1.title.compareTo(courseModel2.title) < 0) {
           return -1;
         }
+        if (courseModel1.name.compareTo(courseModel2.name) > 0) {
+          return 1;
+        }
+        if (courseModel1.name.compareTo(courseModel2.name) < 0) {
+          return -1;
+        }
         return 0;
       };
 
@@ -170,7 +183,7 @@ public class Summary implements SortedListAdapter.ViewModel {
       return toReturn;
     }
     for (int i = 0; i < courses.size(); i++) {
-      if (courses.get(i).newName.toLowerCase().contains(text.toLowerCase())) {
+      if (courses.get(i).name.toLowerCase().contains(text.toLowerCase())) {
         toReturn.add(courses.get(i));
       }
     }

@@ -24,8 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="@{model.number}"
-            android:textColor="@android:color/black"
+            android:text="@{model.nameString()}"
+            android:textColor="@color/colorPrimary"
             android:textSize="22sp" />
 
     </LinearLayout>

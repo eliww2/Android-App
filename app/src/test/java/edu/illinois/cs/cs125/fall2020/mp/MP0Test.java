@@ -127,7 +127,7 @@ public final class MP0Test {
 
   @RunWith(AndroidJUnit4.class)
   @LooperMode(LooperMode.Mode.PAUSED)
-  public static class IntegrationTests {
+    public static class IntegrationTests {
     /** Test summary view to make sure that the correct courses are displayed in the right order. */
     @Test(timeout = 10000L)
     @Graded(points = 20)
