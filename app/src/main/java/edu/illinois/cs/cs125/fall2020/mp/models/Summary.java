@@ -1,7 +1,6 @@
 package edu.illinois.cs.cs125.fall2020.mp.models;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 import java.util.ArrayList;
@@ -107,10 +106,14 @@ public class Summary implements SortedListAdapter.ViewModel {
     number = setNumber;
     title = setTitle;
     name = department + " " + number + ": " + title;
-
   }
+  /**
+   * Get the name for this Summary.
+   *
+   * @return the name for this Summary
+   */
   public String nameString() {
-    return department + " " + number + ": " + title;
+    return this.department + " " + this.number + ": " + this.title;
   }
 
   /** {@inheritDoc} */
@@ -166,24 +169,21 @@ public class Summary implements SortedListAdapter.ViewModel {
         if (courseModel1.title.compareTo(courseModel2.title) < 0) {
           return -1;
         }
-        if (courseModel1.name.compareTo(courseModel2.name) > 0) {
-          return 1;
-        }
-        if (courseModel1.name.compareTo(courseModel2.name) < 0) {
-          return -1;
-        }
         return 0;
       };
 
-  /** Checks courses for instances of @text. */
+  /**
+   * Checks courses for instances of @text.
+   *
+   * @return filtered list
+   * @param courses the courses on the app
+   * @param text is what you're filtering by
+   */
   public static List<Summary> filter(
       @NonNull final List<Summary> courses, @NonNull final String text) {
     List<Summary> toReturn = new ArrayList<>();
-    if (courses.isEmpty()) {
-      return toReturn;
-    }
     for (int i = 0; i < courses.size(); i++) {
-      if (courses.get(i).name.toLowerCase().contains(text.toLowerCase())) {
+      if (courses.get(i).nameString().toLowerCase().contains(text.toLowerCase())) {
         toReturn.add(courses.get(i));
       }
     }

@@ -1,6 +1,7 @@
 package edu.illinois.cs.cs125.fall2020.mp.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -112,6 +113,7 @@ public final class MainActivity extends AppCompatActivity
    */
   @Override
   public boolean onQueryTextSubmit(final String unused) {
+
     return true;
   }
 
@@ -125,9 +127,10 @@ public final class MainActivity extends AppCompatActivity
    */
   @Override
   public boolean onQueryTextChange(final String query) {
+    listAdapter.edit().replaceAll(Summary.filter(courses, query)).commit();
+    Log.d("work", "Please");
     return true;
   }
-
   /**
    * Callback fired when a user clicks on a course in the list view.
    *
