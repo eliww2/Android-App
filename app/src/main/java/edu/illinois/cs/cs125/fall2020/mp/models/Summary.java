@@ -1,6 +1,6 @@
 package edu.illinois.cs.cs125.fall2020.mp.models;
 
-import android.util.Log;
+//import android.util.Log;
 import androidx.annotation.NonNull;
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 import java.util.ArrayList;
@@ -69,16 +69,22 @@ public class Summary implements SortedListAdapter.ViewModel {
     return title;
   }
 
-  private String name;
+  /**
+   * Get the full name for this Summary.
+   *
+   * @return the full name for this Summary
+   */
+  public String nameString() {
+    return department + " " + number + ": " + title;
+  }
 
   /**
-   * Get the endName for this Summary.
+   * Get the URL Request Path for this Summary.
    *
-   * @return the endName for this Summary
+   * @return the URL Request Path for this Summary
    */
-  public final String getName() {
-    Log.d("tag", "got name");
-    return name;
+  public String getPath() {
+    return year + "/" + semester + "/" + department + "/" + number;
   }
 
   /** Create an empty Summary. */
@@ -105,16 +111,12 @@ public class Summary implements SortedListAdapter.ViewModel {
     department = setDepartment;
     number = setNumber;
     title = setTitle;
-    name = department + " " + number + ": " + title;
   }
   /**
    * Get the name for this Summary.
    *
    * @return the name for this Summary
    */
-  public String nameString() {
-    return this.department + " " + this.number + ": " + this.title;
-  }
 
   /** {@inheritDoc} */
   @Override
@@ -126,8 +128,7 @@ public class Summary implements SortedListAdapter.ViewModel {
     return Objects.equals(year, course.year)
         && Objects.equals(semester, course.semester)
         && Objects.equals(department, course.department)
-        && Objects.equals(number, course.number)
-        && Objects.equals(name, course.name);
+        && Objects.equals(number, course.number);
   }
 
   /** {@inheritDoc} */

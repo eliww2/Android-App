@@ -1,5 +1,7 @@
 package edu.illinois.cs.cs125.fall2020.mp.network;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -51,6 +53,23 @@ public final class Server extends Dispatcher {
   @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
   private final Map<Summary, String> courses = new HashMap<>();
 
+  private MockResponse getCourse(@NonNull final String path) {
+    final int length = 4;
+    Log.d("tag", "hello");
+    String[] part = path.split("/");
+    if (part.length != length) {
+      return new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+    }
+
+    Summary sections = new Summary(part[0], part[1], part[2], part[3], "");
+    String imp = courses.get(sections);
+    if (imp == null) {
+      return new MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
+    }
+    return new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK).setBody(imp);
+
+  }
+
   @NonNull
   @Override
   public MockResponse dispatch(@NonNull final RecordedRequest request) {
@@ -62,6 +81,8 @@ public final class Server extends Dispatcher {
         return new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK);
       } else if (path.startsWith("/summary/")) {
         return getSummary(path.replaceFirst("/summary/", ""));
+      } else if (path.startsWith("/course/")) {
+        return getCourse(path.replaceFirst("/course/", ""));
       }
       return new MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
     } catch (Exception e) {
