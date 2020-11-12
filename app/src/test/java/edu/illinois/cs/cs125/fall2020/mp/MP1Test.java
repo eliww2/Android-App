@@ -177,6 +177,7 @@ public final class MP1Test {
             assertThat(response.code()).isEqualTo(HttpStatus.SC_NOT_FOUND);
         }
     }
+
     @SuppressWarnings("SameParameterValue")
     @RunWith(AndroidJUnit4.class)
     @LooperMode(LooperMode.Mode.PAUSED)
@@ -189,7 +190,7 @@ public final class MP1Test {
         /**
          * Test the client getCourse method
          */
-        /*
+
         @Test(timeout = 20000L)
         @Graded(points = 20)
         public void testClientGetCourse() throws JsonProcessingException, InterruptedException, ExecutionException {
@@ -226,10 +227,11 @@ public final class MP1Test {
                 onView(ViewMatchers.withText(summary.get("description").asText())).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
             }
         }
-        */
+*/
         /**
          * Test onClick CourseActivity launch from MainActivity
          */
+
         @Test(timeout = 10000L)
         @Graded(points = 10)
         public void testOnClickLaunch() {

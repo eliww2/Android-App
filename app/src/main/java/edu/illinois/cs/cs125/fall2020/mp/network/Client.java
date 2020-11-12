@@ -15,6 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.illinois.cs.cs125.fall2020.mp.application.CourseableApplication;
+import edu.illinois.cs.cs125.fall2020.mp.models.Course;
 import edu.illinois.cs.cs125.fall2020.mp.models.Summary;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -44,6 +45,14 @@ public final class Client {
      * @param summaries an array of course summaries
      */
     default void summaryResponse(String year, String semester, Summary[] summaries) {}
+
+
+    /**
+     * Course response.
+     * @param summary
+     * @param course
+     */
+    default void courseResponse(Summary summary, Course course) {};
   }
 
   /**
@@ -72,6 +81,18 @@ public final class Client {
             },
             error -> Log.e(TAG, error.toString()));
     requestQueue.add(summaryRequest);
+  }
+
+  /**
+   * get course.
+   * @param summary
+   * @param callbacks
+   */
+  public void getCourse(
+      @NonNull final Summary summary,
+      @NonNull final CourseClientCallbacks callbacks
+  ) {
+
   }
 
   private static Client instance;

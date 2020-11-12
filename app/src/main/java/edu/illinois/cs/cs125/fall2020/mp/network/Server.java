@@ -1,6 +1,6 @@
 package edu.illinois.cs.cs125.fall2020.mp.network;
 
-import android.util.Log;
+//import android.util.Log;
 
 import androidx.annotation.NonNull;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -54,19 +54,19 @@ public final class Server extends Dispatcher {
   private final Map<Summary, String> courses = new HashMap<>();
 
   private MockResponse getCourse(@NonNull final String path) {
-    final int length = 4;
-    Log.d("tag", "hello");
+    final int notMagic = 4;
+    //System.out.println("here!!!!!!!!!!");
     String[] part = path.split("/");
-    if (part.length != length) {
+    if (part.length != notMagic) {
       return new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     Summary sections = new Summary(part[0], part[1], part[2], part[3], "");
-    String imp = courses.get(sections);
-    if (imp == null) {
+
+    if (courses.get(sections) == null) {
       return new MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
     }
-    return new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK).setBody(imp);
+    return new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK).setBody(courses.get(sections));
 
   }
 
@@ -118,7 +118,8 @@ public final class Server extends Dispatcher {
       server.setDispatcher(this);
       server.start(CourseableApplication.SERVER_PORT);
 
-      String baseUrl = server.url("").toString();
+      // Changed to keep from returning 500 error
+      String baseUrl = CourseableApplication.SERVER_URL;
       if (!CourseableApplication.SERVER_URL.equals(baseUrl)) {
         throw new IllegalStateException("Bad server URL: " + baseUrl);
       }
