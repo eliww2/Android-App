@@ -78,14 +78,6 @@ public class Summary implements SortedListAdapter.ViewModel {
     return department + " " + number + ": " + title;
   }
 
-  /**
-   * Get the URL Request Path for this Summary.
-   *
-   * @return the URL Request Path for this Summary
-   */
-  public String getPath() {
-    return year + "/" + semester + "/" + department + "/" + number;
-  }
 
   /** Create an empty Summary. */
   @SuppressWarnings({"unused", "RedundantSuppression"})

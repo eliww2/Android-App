@@ -7,11 +7,14 @@ import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter;
 import edu.illinois.cs.cs125.fall2020.mp.R;
 import edu.illinois.cs.cs125.fall2020.mp.adapters.CourseListAdapter;
 import edu.illinois.cs.cs125.fall2020.mp.application.CourseableApplication;
 import edu.illinois.cs.cs125.fall2020.mp.databinding.ActivityMainBinding;
+//import edu.illinois.cs.cs125.fall2020.mp.models.Course;
 import edu.illinois.cs.cs125.fall2020.mp.models.Summary;
 import edu.illinois.cs.cs125.fall2020.mp.network.Client;
 import java.util.Arrays;
@@ -141,9 +144,18 @@ public final class MainActivity extends AppCompatActivity
    */
   @Override
   public void onCourseClicked(final Summary course) {
-    Log.d(TAG, "Course Clicked");
+
     Intent startCourseActivity = new Intent(this, CourseActivity.class);
-    //startCourseActivity("TITLE", course.getTitle());
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    try {
+      String json = mapper.writeValueAsString(course);
+      Log.d("Hi", "Json works");
+      startCourseActivity.putExtra("COURSE", json);
+      Log.d("Hi", "extra works");
+    } catch (Exception e) { }
+
     startActivity(startCourseActivity);
   }
 }
