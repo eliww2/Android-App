@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.illinois.cs.cs125.fall2020.mp.R;
 import edu.illinois.cs.cs125.fall2020.mp.databinding.ActivityCourseBinding;
 import edu.illinois.cs.cs125.fall2020.mp.models.Course;
-import edu.illinois.cs.cs125.fall2020.mp.models.Summary;
+//import edu.illinois.cs.cs125.fall2020.mp.models.Summary;
 
 
 /**
@@ -47,7 +47,8 @@ public class CourseActivity extends AppCompatActivity {
       Log.d("hi", "4?!");
       Course courseFromSummary = mapper.readValue(json, Course.class);
       Log.d("hi", "5?!");
-      //binding.textView.setText(courseFromSummary.nameString());
+      binding.titleView.setText(courseFromSummary.nameString());
+      binding.descriptionView.setText(courseFromSummary.getDescription());
     } catch (Exception e) { }
   }
 }
