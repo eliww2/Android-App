@@ -50,6 +50,7 @@ public class CourseActivity extends AppCompatActivity {
       System.out.println(courseFromSummary.getDescription());
       binding.titleView.setText(courseFromSummary.nameString());
       binding.descriptionView.setText(courseFromSummary.getDescription());
+
     } catch (Exception e) {
       Log.d("Uh-Oh", e + "thrown");
     }
