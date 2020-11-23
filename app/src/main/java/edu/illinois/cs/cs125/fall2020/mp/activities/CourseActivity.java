@@ -47,8 +47,11 @@ public class CourseActivity extends AppCompatActivity {
       Log.d("hi", "4?!");
       Course courseFromSummary = mapper.readValue(json, Course.class);
       Log.d("hi", "5?!");
+      System.out.println(courseFromSummary.getDescription());
       binding.titleView.setText(courseFromSummary.nameString());
       binding.descriptionView.setText(courseFromSummary.getDescription());
-    } catch (Exception e) { }
+    } catch (Exception e) {
+      Log.d("Uh-Oh", e + "thrown");
+    }
   }
 }

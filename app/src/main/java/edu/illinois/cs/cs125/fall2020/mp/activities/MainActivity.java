@@ -154,7 +154,9 @@ public final class MainActivity extends AppCompatActivity
       Log.d("Hi", "Json works");
       startCourseActivity.putExtra("COURSE", json);
       Log.d("Hi", "extra works");
-    } catch (Exception e) { }
+    } catch (Exception e) {
+      Log.d("Uh-Oh", "exception was thrown");
+    }
 
     startActivity(startCourseActivity);
   }

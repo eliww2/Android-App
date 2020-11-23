@@ -10,14 +10,16 @@ public class Course extends Summary {
      */
   public Course() {}
 
-    /** Create constructer.
+
+  private String description;
+    /** Create constructor.
      *
      * @param setDescription set
      **/
   public Course(final String setDescription) {
     description = setDescription;
   }
-  private String description;
+
 
     /**
      *
