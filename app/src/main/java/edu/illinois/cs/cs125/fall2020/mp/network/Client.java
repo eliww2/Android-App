@@ -131,7 +131,23 @@ public final class Client {
       @NonNull final String clientID,
       @NonNull final CourseClientCallbacks callbacks
   ) {
-    throw new IllegalArgumentException("Not yet implemented");
+    String url = CourseableApplication.SERVER_URL + "rating/"
+            + summary.getYear() + "/" + summary.getSemester()
+            + "/" + summary.getDepartment() + "/" + summary.getNumber() + "?client=" + clientID;
+    StringRequest ratingRequest =
+            new StringRequest(
+                    Request.Method.GET,
+                    url,
+                    response -> {
+                      try {
+                        Rating rating = objectMapper.readValue(response, Rating.class);
+                        callbacks.yourRating(summary, rating);
+                      } catch (Exception e) {
+                        e.printStackTrace();
+                      }
+                    },
+                    error -> Log.e(TAG, error.toString()));
+    requestQueue.add(ratingRequest);
   }
 
   /**
@@ -145,7 +161,23 @@ public final class Client {
           @NonNull final Rating rating,
           @NonNull final CourseClientCallbacks callbacks
   ) {
-    throw new IllegalArgumentException("Not yet implemented");
+    String url = CourseableApplication.SERVER_URL + "rating/"
+            + summary.getYear() + "/" + summary.getSemester()
+            + "/" + summary.getDepartment() + "/" + summary.getNumber() + "?client=" + rating.getId();
+    StringRequest ratingRequest =
+            new StringRequest(
+                    Request.Method.POST,
+                    url,
+                    response -> {
+                      try {
+                        Rating responseRating = objectMapper.readValue(response, Rating.class);
+                        callbacks.yourRating(summary, responseRating);
+                      } catch (Exception e) {
+                        e.printStackTrace();
+                      }
+                    },
+                    error -> Log.e(TAG, error.toString()));
+    requestQueue.add(ratingRequest);
   }
 
   private static Client instance;
