@@ -3,6 +3,7 @@ package edu.illinois.cs.cs125.fall2020.mp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.RatingBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,5 +55,6 @@ public class CourseActivity extends AppCompatActivity {
     } catch (Exception e) {
       Log.d("Uh-Oh", e + "thrown");
     }
+    final RatingBar rating = (RatingBar) findViewById(R.id.rating);
   }
 }

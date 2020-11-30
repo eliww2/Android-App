@@ -1,4 +1,6 @@
 package edu.illinois.cs.cs125.fall2020.mp.models;
+
+
 /** thing.
 * Course extends Summary
  */

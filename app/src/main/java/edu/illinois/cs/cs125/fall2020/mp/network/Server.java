@@ -2,12 +2,19 @@ package edu.illinois.cs.cs125.fall2020.mp.network;
 
 //import android.util.Log;
 
+//import android.telephony.PhoneNumberFormattingTextWatcher;
+//import android.util.Log;
+
 import androidx.annotation.NonNull;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+//import org.json.JSONException;
+
 import edu.illinois.cs.cs125.fall2020.mp.application.CourseableApplication;
+import edu.illinois.cs.cs125.fall2020.mp.models.Rating;
 import edu.illinois.cs.cs125.fall2020.mp.models.Summary;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -39,10 +46,10 @@ public final class Server extends Dispatcher {
 
   private MockResponse getSummary(@NonNull final String path) {
     String[] parts = path.split("/");
+
     if (parts.length != 2) {
       return new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
     }
-
     String summary = summaries.get(parts[0] + "_" + parts[1]);
     if (summary == null) {
       return new MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
@@ -50,12 +57,82 @@ public final class Server extends Dispatcher {
     return new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK).setBody(summary);
   }
 
+  private final Map<String, Rating> ratings = new HashMap<>();
+
+
+  private MockResponse getRating(@NonNull final String path, @NonNull final RecordedRequest request) {
+
+    //preventing magic Numbers
+    final int four = 4;
+    final int six = 6;
+    final int notMagic = 7;
+
+    // split the passed path by /?=, results in GET, year, semester, department, number, "client", UUID
+    String[] pathWay = path.split("[/?=]");
+
+    // checks if length is right
+    if (pathWay.length != notMagic) {
+      return new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+    }
+
+    // Makes summary and checks if it is a valid Summary
+    Summary summary = new Summary(pathWay[1], pathWay[2], pathWay[3], pathWay[four], "");
+    if (courses.get(summary) == null) {
+      return new MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
+    }
+
+    // checks for valid client id
+    final int idLength = 32;
+    if (pathWay[six].length() < idLength || pathWay[six].equals("bogus")) {
+      return new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+    }
+
+    // make the key to find the rating or make a default rating if key doesn't find rating.
+    // This will be turned to json if GET method.
+    String key = pathWay[six] + pathWay[1] + pathWay[2] + pathWay[3] + pathWay[four];
+    Rating toJson = ratings.getOrDefault(key, new Rating(pathWay[six], Rating.NOT_RATED));
+
+
+
+    if (request.getMethod().equals("GET")) {
+      try {
+        String json = mapper.writeValueAsString(toJson);
+        return new MockResponse().setResponseCode(HttpURLConnection.HTTP_OK).setBody(json);
+      } catch (Exception e) {
+        return new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+      }
+    } else if (request.getMethod().equals("POST")) {
+      try {
+        if (ratings.get(key) == null) {
+          System.out.println("bad");
+        } else {
+          System.out.println(ratings.get(key).getRating());
+        }
+        System.out.println("Hello there?!");
+        String theString = request.getBody().readUtf8();
+        System.out.println(theString);
+        Rating toPut = mapper.readValue(theString, Rating.class);
+        System.out.println(toPut.getId());
+        System.out.println(toPut.getRating());
+        ratings.put(key, toPut);
+        System.out.println(ratings.get(key).getRating());
+      } catch (Exception exception) {
+        return new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+      }
+      String redirect = path.replaceFirst("POST/", "/rating/");
+      return new MockResponse().setResponseCode(HttpURLConnection.HTTP_MOVED_TEMP).setHeader(
+              "Location", redirect
+      );
+    }
+    return new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
+  }
+
   @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
   private final Map<Summary, String> courses = new HashMap<>();
 
   private MockResponse getCourse(@NonNull final String path) {
     final int notMagic = 4;
-    //System.out.println("here!!!!!!!!!!");
+  //  Log.d("Tag", "path(");
     String[] part = path.split("/");
     if (part.length != notMagic) {
       return new MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST);
@@ -83,6 +160,10 @@ public final class Server extends Dispatcher {
         return getSummary(path.replaceFirst("/summary/", ""));
       } else if (path.startsWith("/course/")) {
         return getCourse(path.replaceFirst("/course/", ""));
+      } else if (path.startsWith("/rating/") && request.getMethod().equals("GET")) {
+        return getRating(path.replaceFirst("/rating/", "GET/"), request);
+      } else if (path.startsWith("/rating/") && request.getMethod().equals("POST")) {
+        return getRating(path.replaceFirst("/rating/", "POST/"), request);
       }
       return new MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
     } catch (Exception e) {

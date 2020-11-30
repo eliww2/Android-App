@@ -119,6 +119,13 @@ public final class Client {
     requestQueue.add(courseRequest);
 
   }
+
+  /**
+   * gets the rating from client.
+   * @param summary
+   * @param clientID
+   * @param callbacks
+   */
   public void getRating(
       @NonNull final Summary summary,
       @NonNull final String clientID,
@@ -127,6 +134,12 @@ public final class Client {
     throw new IllegalArgumentException("Not yet implemented");
   }
 
+  /**
+   * posts rating to app.
+   * @param summary
+   * @param rating
+   * @param callbacks
+   */
   public void postRating(
           @NonNull final Summary summary,
           @NonNull final Rating rating,

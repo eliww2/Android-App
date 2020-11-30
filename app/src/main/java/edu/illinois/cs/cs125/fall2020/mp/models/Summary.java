@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+//import java.util.UUID;
 
 /**
  * Model holding the course summary information shown in the course list.
@@ -77,7 +78,6 @@ public class Summary implements SortedListAdapter.ViewModel {
   public String nameString() {
     return department + " " + number + ": " + title;
   }
-
 
   /** Create an empty Summary. */
   @SuppressWarnings({"unused", "RedundantSuppression"})

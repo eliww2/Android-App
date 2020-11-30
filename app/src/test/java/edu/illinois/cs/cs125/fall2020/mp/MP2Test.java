@@ -1,4 +1,4 @@
-package edu.illinois.cs.cs125.fall2020.mp;
+    package edu.illinois.cs.cs125.fall2020.mp;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.actionWithAssertions;
