@@ -2,6 +2,8 @@ package edu.illinois.cs.cs125.fall2020.mp.network;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.ExecutorDelivery;
 import com.android.volley.Network;
@@ -170,13 +172,23 @@ public final class Client {
                     url,
                     response -> {
                       try {
-                        Rating responseRating = objectMapper.readValue(response, Rating.class);
-                        callbacks.yourRating(summary, responseRating);
+                        callbacks.yourRating(summary, rating);
                       } catch (Exception e) {
                         e.printStackTrace();
                       }
                     },
-                    error -> Log.e(TAG, error.toString()));
+                    error -> Log.e(TAG, error.toString())) {
+          @Override
+          public byte[] getBody() throws AuthFailureError {
+            try {
+              String convert = objectMapper.writeValueAsString(rating);
+              return convert.getBytes();
+            } catch (Exception e) {
+              e.printStackTrace();
+              return null;
+            }
+          }
+    };
     requestQueue.add(ratingRequest);
   }
 

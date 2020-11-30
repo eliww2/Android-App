@@ -103,11 +103,6 @@ public final class Server extends Dispatcher {
       }
     } else if (request.getMethod().equals("POST")) {
       try {
-        if (ratings.get(key) == null) {
-          System.out.println("bad");
-        } else {
-          System.out.println(ratings.get(key).getRating());
-        }
         System.out.println("Hello there?!");
         String theString = request.getBody().readUtf8();
         System.out.println(theString);
