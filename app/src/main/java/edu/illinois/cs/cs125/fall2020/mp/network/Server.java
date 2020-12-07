@@ -105,7 +105,7 @@ public final class Server extends Dispatcher {
       try {
         System.out.println("Hello there?!");
         String theString = request.getBody().readUtf8();
-        System.out.println(theString);
+
         Rating toPut = mapper.readValue(theString, Rating.class);
         System.out.println(toPut.getId());
         System.out.println(toPut.getRating());

@@ -25,13 +25,6 @@ public class CourseableApplication extends Application {
 
   private String clientID = UUID.randomUUID().toString();
 
-  /**
-   * get clientID.
-   * @return clientID.
-   */
-  public String getClientID() {
-    return clientID;
-  }
 
   @Override
   public final void onCreate() {
@@ -47,5 +40,13 @@ public class CourseableApplication extends Application {
    */
   public final Client getCourseClient() {
     return client;
+  }
+
+  /**
+   * get clientID.
+   * @return clientID.
+   */
+  public String getClientID() {
+    return clientID;
   }
 }
